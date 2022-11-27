@@ -1,10 +1,16 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
-  </nav>
+  <Header />
   <router-view />
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import Header from "./components/HeaderAplication.vue";
+
+export default defineComponent({
+  components: { Header },
+});
+</script>
 
 <style>
 * {
@@ -18,6 +24,33 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+button {
+  cursor: pointer;
+}
+
+.button-generic {
+  font-weight: 500;
+  font-size: 17px;
+  border: 2px solid #47aee1;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 6px 10px;
+  color: #47aee1;
+}
+
+.button-generic:hover {
+  color: #fff;
+  background: #47aee1;
+}
+
+.container-generic {
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  padding-right: 5% !important;
+  padding-left: 5% !important;
 }
 
 /* nav {
