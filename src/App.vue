@@ -1,20 +1,24 @@
 <template>
   <Header />
   <router-view />
-  <!-- <Button /> -->
+  <Button />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Header from "./components/HeaderAplication.vue";
-// import Button from "./components/ButtonHelp.vue";
+import Button from "./components/ButtonHelp.vue";
 
 export default defineComponent({
-  components: { Header },
+  components: { Header, Button },
 });
 </script>
 
 <style>
+:root {
+  --primaryColor: #47aee1;
+  --white: #fff;
+}
 * {
   padding: 0;
   margin: 0;

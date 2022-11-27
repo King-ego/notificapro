@@ -7,9 +7,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/HomeView.vue"),
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/AboutView.vue"),
+    path: "/new-notification",
+    name: "newNotification",
+    component: () => import("../views/NewNotification.vue"),
   },
 ];
 

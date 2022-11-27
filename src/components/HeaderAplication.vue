@@ -11,7 +11,7 @@
         <router-link to="/" class="button-generic"
           >Guia de Orientação Para Preenchimento</router-link
         >
-        <router-link to="/" class="button-generic"
+        <router-link to="/new-notification" class="button-generic"
           >Novas Notificações</router-link
         >
       </div>
