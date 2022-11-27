@@ -1,11 +1,13 @@
 <template>
   <Header />
   <router-view />
+  <!-- <Button /> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Header from "./components/HeaderAplication.vue";
+// import Button from "./components/ButtonHelp.vue";
 
 export default defineComponent({
   components: { Header },

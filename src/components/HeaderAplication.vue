@@ -1,7 +1,7 @@
 <template>
   <header class="header container-generic">
     <nav class="flex justify-between">
-      <div class="flex items-center">
+      <div class="flex items-start">
         <router-link to="/" class="flex items-center">
           <img src="../assets/images/logo.png" alt="Logo azul cruzada" />
           <span class="title-header">NOTIFICAPRO</span>
