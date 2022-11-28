@@ -21,6 +21,8 @@ export default defineComponent({
   --white: #fff;
   --black: #000;
   --gray900: #111;
+  --gray600: #1f1f1f;
+  --lightGray: #999999;
 }
 * {
   padding: 0;

@@ -1,5 +1,5 @@
 export default {
-  "Eventos Adversos": [
+  "Eventos Adverse": [
     {
       id: 1,
       title: "Farmacovigilância",
@@ -40,12 +40,49 @@ export default {
       id: 4,
       title: "Infecções Relacionadas à Assistência",
       description: "bla bla4",
+      options: [
+        "Infecção de sítio cirúrgico",
+        "Pneumonia associado a ventilação mecânica",
+        "Infecção de corrente sanguinea associado ao uso de cateter venoso central",
+        "Infecção Urinária associado ao uso de sonda vesical",
+        "Flebite",
+        "Outros",
+      ],
     },
     {
       id: 5,
       title: "Falhas Durante a Prestação de Cuidados",
       description: "bla bla5",
+      options: [
+        "Falha relacionado a identificação de paciente",
+        "Falha relacionado a administração de dieta enteral",
+        "Falha relacionado a exames laboratoriais",
+        "Lesão por pressão de estágio",
+        "Queda de paciente",
+        "Deslocamento acidental de tubos de drenagem",
+        "Suicídio, tentativa de suicídio ou dano auto infligido que resulte em lesão durante a assistência dentro dos serviços de saúde",
+        "Óbito ou lesão grave materna associadoao trabalho de parto ou parto em gestão de baixo risco",
+        "Falha relacionado no preparo de exames",
+        "Deslocamento acidental de cateter enteral",
+        "Entubação não programada",
+        "Falha na comunicação durante a passagem de plantão",
+        "Deslocamento acidental de cateter venoso",
+        "Óbito ou lesão grave associado a fuga de paciente",
+      ],
     },
-    { id: 6, title: "Cirurgia Segura", description: "bla bla6" },
+    {
+      id: 6,
+      title: "Cirurgia Segura",
+      description: "bla bla6",
+      options: [
+        "Falha relaciodo a procedimento cirúrgico",
+        "Paciente sem identificação",
+        "falha relacionado a atraso na cirurgia",
+        "Retenção de objeto em paciente pós cirurgia",
+        "Não fazer check list de cirurgia segura",
+        "Procedimento cirúrgico realizado em local errado",
+        "Procedimento realizado em paciente errado",
+      ],
+    },
   ],
 };
