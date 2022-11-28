@@ -17,7 +17,10 @@ export default defineComponent({
 <style>
 :root {
   --primaryColor: #47aee1;
+  --secundaryColor: #47e1ae;
   --white: #fff;
+  --black: #000;
+  --gray900: #111;
 }
 * {
   padding: 0;
