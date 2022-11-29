@@ -1,6 +1,6 @@
 <template>
   <div class="container-generic">
-    <div v-if="!step" class="grid col-span-6 grid-flow-col gap-4">
+    <div v-if="!step" class="step-one">
       <div class="flex items-center justify-center">
         Identificação do Paciente
       </div>
@@ -98,7 +98,7 @@
         </div>
       </div>
     </div>
-    <div v-if="step === 2" class="grid col-span-6 grid-flow-col gap-4">
+    <div v-if="step === 2" class="step-two">
       <div>{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
         <div>Selecione uma das Opções</div>
@@ -116,7 +116,7 @@
         </div>
       </div>
     </div>
-    <div v-if="step === 3" class="grid col-span-6 grid-flow-col gap-4">
+    <div v-if="step === 3" class="step-three">
       <div>Descrição do Evento Ocorrido</div>
       <div class="flex flex-col content-is-input gap-4">
         <div>Descrição do Evento Ocorrido</div>
@@ -128,22 +128,26 @@
           ></textarea>
         </div>
         <div>
-          <button @click="next()" class="btn-form">Enviar</button>
+          <button @click="open()" class="btn-form">Enviar</button>
         </div>
       </div>
     </div>
+    <Modal :show="showModalConfirm" :data="data" v-on:close="close()" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import stepForm from "../components/step/step";
+import Modal from "../components/ModalConfirm.vue";
 
 export default defineComponent({
+  components: { Modal },
   data() {
     return {
       step: 0,
       optionsStep3: [""],
+      showModalConfirm: false,
       adverses: stepForm["Eventos Adverse"],
       verifyDescription: "",
       nextToStep2: false,
@@ -181,6 +185,9 @@ export default defineComponent({
     prev() {
       this.step = this.step - 1;
     },
+    close() {
+      this.showModalConfirm = false;
+    },
     showDescrition(value: string, verify: boolean) {
       if (!verify) {
         this.verifyDescription = "";
@@ -197,11 +204,25 @@ export default defineComponent({
       this.data.option = option;
       this.next();
     },
+    open() {
+      this.showModalConfirm = true;
+    },
   },
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
+@media (min-width: 800px) {
+  .step-one {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .step-two {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .step-three {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+}
 .box-step-2 {
   background: var(--white);
   color: var(--black);
@@ -272,7 +293,6 @@ export default defineComponent({
   padding: 10px 20px;
   border-radius: 20px;
 }
-
 .textare-content {
   resize: none;
   width: 100%;
