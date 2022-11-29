@@ -39,7 +39,7 @@ export default defineComponent({
 
 <style scoped>
 .content-button-help {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   cursor: pointer;
