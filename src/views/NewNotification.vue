@@ -81,7 +81,7 @@
     <div v-if="step === 1">
       <p>Tipo de Incidentes ou Eventos Adversos</p>
       <p>Selecione uma das opções</p>
-      <div class="grid grid-cols-3 gap-4">
+      <div class="defalt">
         <div
           v-for="adverse in adverses"
           :key="adverse.id"
@@ -90,12 +90,11 @@
           @mouseout="showDescrition(adverse.description, false)"
           @click="setAdverse(adverse)"
         >
-          <p v-if="adverse.description === verifyDescription">
-            {{ adverse.description }}
-          </p>
-          <span v-else>
-            {{ adverse.title }}
-          </span>
+          {{
+            adverse.description === verifyDescription
+              ? adverse.description
+              : adverse.title
+          }}
         </div>
       </div>
     </div>
@@ -103,7 +102,7 @@
       <div>{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
         <div>Selecione uma das Opções</div>
-        <div class="grid grid-cols-4 gap-3">
+        <div class="box-content-info">
           <div
             v-for="option in optionsStep3"
             :key="option"
@@ -208,6 +207,8 @@ export default defineComponent({
   color: var(--black);
   border: 1px solid var(--primaryColor);
   cursor: pointer;
+  /* width: 100%;
+  max-width: 100px; */
 }
 .content-is-input input {
   border-radius: 10px;
@@ -283,6 +284,40 @@ export default defineComponent({
 }
 .row-input-custom span {
   color: var(--white);
+}
+.defalt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.defalt div {
+  width: 300px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.box-content-info {
+  overflow-x: scroll;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  height: 430px;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+}
+
+.box-content-info div {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes errorAnimated {
