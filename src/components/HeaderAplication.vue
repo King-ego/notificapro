@@ -32,7 +32,7 @@ export default defineComponent({});
 .title-header {
   font-weight: bold;
   font-size: 24px;
-  color: #47aee1;
+  color: var(--primaryColor);
   margin-left: 8px;
 }
 </style>
