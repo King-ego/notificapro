@@ -13,7 +13,7 @@
             placeholder="Nome do Paciente"
             v-model="data.user.name"
             required
-            :class="nextToStep2 && !data.user.name ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.name ? 'error' : ''"
           />
         </div>
         <div class="flex items-center row-input-custom">
@@ -30,7 +30,7 @@
             type="text"
             placeholder="Data de Admissão"
             v-model="data.user.admissonDate"
-            :class="nextToStep2 && !data.user.admissonDate ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.admissonDate ? 'error' : ''"
             required
           />
         </div>
@@ -40,7 +40,7 @@
             type="text"
             placeholder="Turno"
             v-model="data.user.turn"
-            :class="nextToStep2 && !data.user.turn ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.turn ? 'error' : ''"
             required
           />
         </div>
@@ -50,7 +50,7 @@
             type="text"
             placeholder="Idade"
             v-model="data.user.age"
-            :class="nextToStep2 && !data.user.age ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.age ? 'error' : ''"
             required
           />
         </div>
@@ -60,7 +60,7 @@
             type="text"
             placeholder="Sexo"
             v-model="data.user.sex"
-            :class="nextToStep2 && !data.user.sex ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.sex ? 'error' : ''"
             required
           />
         </div>
@@ -73,7 +73,7 @@
           />
         </div>
         <div class="flex justify-between">
-          <button @click="next()" class="btn-form">Proximo</button>
+          <button @click="nextStep2()" class="btn-form">Proximo</button>
           <span>*Itens Obrigatórios</span>
         </div>
       </div>
@@ -86,16 +86,35 @@
           v-for="adverse in adverses"
           :key="adverse.id"
           class="box-step-2"
-          @mouseenter="showDescrition(adverse.description, true)"
-          @mouseout="showDescrition(adverse.description, false)"
           @click="setAdverse(adverse)"
+          :class="
+            nextToStep3 && !data.adverse
+              ? 'error'
+              : data.adverse === adverse.title
+              ? 'selected'
+              : 'not-selected'
+          "
         >
-          {{
-            adverse.description === verifyDescription
-              ? adverse.description
-              : adverse.title
-          }}
+          <div
+            @mouseenter="showDescrition(adverse.description, true)"
+            @mouseout="showDescrition(adverse.description, false)"
+            :class="
+              adverse.description === verifyDescription
+                ? 'box-step-2-decription'
+                : 'box-step-2-title'
+            "
+          >
+            {{
+              adverse.description === verifyDescription
+                ? adverse.description
+                : adverse.title
+            }}
+          </div>
         </div>
+      </div>
+      <div>
+        <button @click="prev()">Voltar</button>
+        <button @click="nextStep3()">Proximo</button>
       </div>
     </div>
     <div v-if="step === 2" class="step-two">
@@ -106,8 +125,14 @@
           <div
             v-for="option in optionsStep3"
             :key="option"
-            class="box-step-2"
             @click="setOption(option)"
+            :class="
+              nextToStep4 && !data.option
+                ? 'error'
+                : data.option === option
+                ? 'selected'
+                : 'not-selected'
+            "
           >
             <p>
               {{ option }}
@@ -115,6 +140,8 @@
           </div>
         </div>
       </div>
+      <button @click="prev()">Voltar</button>
+      <button @click="nextStep4()">Proximo</button>
     </div>
     <div v-if="step === 3" class="step-three">
       <div>Descrição do Evento Ocorrido</div>
@@ -125,6 +152,7 @@
             class="textare-content"
             placeholder="Digite aqui"
             v-model="data.description"
+            :class="nextToStepModal && !data.description ? 'error' : ''"
           ></textarea>
         </div>
         <div>
@@ -132,25 +160,36 @@
         </div>
       </div>
     </div>
-    <Modal :show="showModalConfirm" :data="data" v-on:close="close()" />
+    <modal-confirm
+      :show="showModalConfirm"
+      :data="data"
+      v-on:close="close()"
+      v-on:sucess="sucessModal()"
+    />
+    <modal-sucess :show="sucess" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import stepForm from "../components/step/step";
-import Modal from "../components/ModalConfirm.vue";
+import ModalCofirm from "../components/ModalConfirm.vue";
+import ModalSucess from "../components/ModalSucess.vue";
 
 export default defineComponent({
-  components: { Modal },
+  components: { "modal-confirm": ModalCofirm, "modal-sucess": ModalSucess },
   data() {
     return {
       step: 0,
       optionsStep3: [""],
       showModalConfirm: false,
+      sucess: false,
       adverses: stepForm["Eventos Adverse"],
       verifyDescription: "",
       nextToStep2: false,
+      nextToStep3: false,
+      nextToStep4: false,
+      nextToStepModal: false,
       data: {
         user: {
           name: "",
@@ -168,24 +207,40 @@ export default defineComponent({
     };
   },
   methods: {
-    next() {
-      console.log(this.data);
+    nextStep2() {
       const validated = {
         ...this.data.user,
         ocorrencyDate: undefined,
         registre: undefined,
       };
       this.nextToStep2 = true;
+      if (!Object.values(validated).includes("")) {
+        this.next();
+      }
+    },
+    nextStep3() {
+      this.nextToStep3 = true;
+      if (this.data.adverse) this.next();
+    },
+    nextStep4() {
+      this.nextToStep4 = true;
+      if (this.data.option) this.next();
+    },
+    next() {
+      console.log(this.data);
       console.log(this.nextToStep2);
       if (this.step + 1 >= 4) return;
-      if (!Object.values(validated).includes("")) {
-        this.step = this.step + 1;
-      }
+      this.step = this.step + 1;
     },
     prev() {
       this.step = this.step - 1;
     },
     close() {
+      this.showModalConfirm = false;
+      this.step = 0;
+    },
+    sucessModal() {
+      this.sucess = true;
       this.showModalConfirm = false;
     },
     showDescrition(value: string, verify: boolean) {
@@ -198,14 +253,15 @@ export default defineComponent({
     setAdverse(value: { title: string; options: string[] }) {
       this.data.adverse = value.title;
       this.optionsStep3 = value.options;
-      this.next();
     },
     setOption(option: string) {
       this.data.option = option;
-      this.next();
     },
     open() {
-      this.showModalConfirm = true;
+      this.nextToStepModal = true;
+      if (this.data.description) {
+        this.showModalConfirm = true;
+      }
     },
   },
 });
@@ -227,9 +283,27 @@ export default defineComponent({
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--primaryColor);
+  border-radius: 20px;
   cursor: pointer;
-  /* width: 100%;
-  max-width: 100px; */
+  width: 300px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box-step-2 div {
+  @apply flex justify-center items-center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+.box-step-2-decription {
+  color: var(--gray200);
+  font-size: 12px;
+}
+.box-step-2-title {
+  font-weight: 700;
+  color: var(--black);
 }
 .content-is-input input {
   border-radius: 10px;
@@ -248,14 +322,6 @@ export default defineComponent({
 
 .content-is-input input::placeholder {
   color: var(--lightGray);
-}
-
-.input-error {
-  border: 1px solid red !important;
-  animation: errorAnimated 2s forwards;
-}
-.input-error::placeholder {
-  color: red !important;
 }
 .content-is-input {
   position: relative;
@@ -286,13 +352,6 @@ export default defineComponent({
   transform: rotate(110deg);
   border-radius: 100px;
 }
-.btn-form {
-  background: var(--secundaryColor);
-  border: none;
-  color: var(--white);
-  padding: 10px 20px;
-  border-radius: 20px;
-}
 .textare-content {
   resize: none;
   width: 100%;
@@ -312,15 +371,6 @@ export default defineComponent({
   justify-content: center;
 }
 
-.defalt div {
-  width: 300px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-}
-
 .box-content-info {
   overflow-x: scroll;
   width: 100%;
@@ -338,6 +388,22 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--primaryColor);
+  border-radius: 20px;
+}
+
+.selected {
+  border: 1px solid red !important;
+}
+
+.error {
+  border: 1px solid red !important;
+  animation: errorAnimated 2s forwards;
+}
+.error::placeholder {
+  color: red !important;
 }
 
 @keyframes errorAnimated {

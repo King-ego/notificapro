@@ -1,7 +1,7 @@
 <template>
-  <Header />
+  <header-application />
   <router-view />
-  <Button />
+  <button-help />
 </template>
 
 <script lang="ts">
@@ -10,7 +10,7 @@ import Header from "./components/HeaderAplication.vue";
 import Button from "./components/ButtonHelp.vue";
 
 export default defineComponent({
-  components: { Header, Button },
+  components: { "header-application": Header, "button-help": Button },
 });
 </script>
 
@@ -24,6 +24,7 @@ export default defineComponent({
   --gray900: #111;
   --gray600: #1f1f1f;
   --gray500: #262222;
+  --gray200: #bfbfbf;
   --lightGray: #999999;
   --darkBlue: #2c3e50;
 }
@@ -42,6 +43,14 @@ export default defineComponent({
 
 button {
   cursor: pointer;
+}
+
+.btn-form {
+  background: var(--secundaryColor);
+  border: none;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 20px;
 }
 
 .button-generic {

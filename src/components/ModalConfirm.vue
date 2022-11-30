@@ -1,18 +1,53 @@
 <template>
   <div class="modal flex justify-center items-center" v-if="show">
-    <div class="modal-content flex justify-center items-center flex-col">
-      <p>{{ data.user.name }}</p>
-      <p>{{ data.user.registre }}</p>
-      <p>{{ data.user.admissonDate }}</p>
-      <p>{{ data.user.turn }}</p>
-      <p>{{ data.user.age }}</p>
-      <p>{{ data.user.sex }}</p>
-      <p>{{ data.user.ocorrencyDate }}</p>
-      <p>{{ data.adverse }}</p>
-      <p>{{ data.option }}</p>
-      <p>{{ data.description }}</p>
-      <button @click="$emit('close')">dfdfdf</button>
-      <button></button>
+    <div class="modal-content">
+      <div class="modal-title">Confirmar Notificação</div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.name }}</p>
+      </div>
+      <div class="flex items-center" v-if="data.user.registre">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.registre }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.admissonDate }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.turn }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.age }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.sex }}</p>
+      </div>
+      <div class="flex items-center" v-if="data.user.ocorrencyDate">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.user.ocorrencyDate }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.adverse }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.option }}</p>
+      </div>
+      <div class="flex items-center">
+        <span class="list-item"></span>
+        <p class="list-item-text">{{ data.description }}</p>
+      </div>
+      <button class="container-button">
+        <button @click="$emit('close')">Editar Notificação</button>
+        <button @click="$emit('sucess')" class="button-generic">
+          Enviar Notificação
+        </button>
+      </button>
     </div>
   </div>
 </template>
@@ -32,11 +67,14 @@ export default defineComponent({
     close() {
       this.$emit("close");
     },
+    sucess() {
+      this.$emit("sucess");
+    },
   },
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .modal {
   position: fixed;
   width: 100%;
@@ -44,11 +82,53 @@ export default defineComponent({
   background: var(--blackA03);
   top: 0;
   left: 0;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .modal-content {
+  @apply flex flex-col items-start;
   width: 500px;
-  height: 500px;
+  min-height: 500px;
   background: var(--white);
+  border-radius: 20px;
+  padding: 10px 40px 60px;
+  position: relative;
+}
+
+.modal-title {
+  @apply flex justify-center;
+  color: var(--primaryColor);
+  font-weight: 600;
+  font-size: 30px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.list-item {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: var(--primaryColor);
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.list-item-text {
+  text-align: left;
+}
+
+.container-button {
+  @apply flex justify-between;
+  width: 100%;
+  margin-top: 100px;
+}
+.button-generic {
+  background: var(--primaryColor);
+  color: var(--white);
+}
+.button-generic:hover {
+  background: var(--white);
+  color: var(--primaryColor);
 }
 </style>
