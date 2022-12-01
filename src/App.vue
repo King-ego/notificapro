@@ -1,7 +1,7 @@
 <template>
-  <Header />
+  <header-application />
   <router-view />
-  <Button />
+  <button-help />
 </template>
 
 <script lang="ts">
@@ -10,7 +10,7 @@ import Header from "./components/HeaderAplication.vue";
 import Button from "./components/ButtonHelp.vue";
 
 export default defineComponent({
-  components: { Header, Button },
+  components: { "header-application": Header, "button-help": Button },
 });
 </script>
 
@@ -20,10 +20,39 @@ export default defineComponent({
   --secundaryColor: #47e1ae;
   --white: #fff;
   --black: #000;
+  --blackA03: rgba(0, 0, 0, 0.3);
   --gray900: #111;
   --gray600: #1f1f1f;
+  --gray500: #262222;
+  --gray200: #bfbfbf;
   --lightGray: #999999;
+  --darkBlue: #2c3e50;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--primaryColor);
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--secundaryColor), var(--primaryColor));
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--primaryColor), var(--secundaryColor));
+  border-radius: 10px;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -34,26 +63,34 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--darkBlue);
 }
 
 button {
   cursor: pointer;
 }
 
+.btn-form {
+  background: var(--secundaryColor);
+  border: none;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
 .button-generic {
   font-weight: 500;
   font-size: 17px;
-  border: 2px solid #47aee1;
+  border: 2px solid var(--primaryColor);
   cursor: pointer;
   border-radius: 20px;
   padding: 6px 10px;
-  color: #47aee1;
+  color: var(--primaryColor);
 }
 
 .button-generic:hover {
-  color: #fff;
-  background: #47aee1;
+  color: var(--white);
+  background: var(--primaryColor);
 }
 
 .container-generic {
@@ -63,17 +100,4 @@ button {
   padding-right: 5% !important;
   padding-left: 5% !important;
 }
-
-/* nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>

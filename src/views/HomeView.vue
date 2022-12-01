@@ -27,7 +27,7 @@ export default defineComponent({
 }
 .home__text {
   margin-left: 80px;
-  color: #262222;
+  color: var(--gray500);
   font-size: 42px;
   font-weight: 100;
   width: 100%;
@@ -36,7 +36,7 @@ export default defineComponent({
   line-height: 110%;
 }
 .home__text span {
-  color: #47aee1;
+  color: var(--primaryColor);
   font-weight: bold;
   text-transform: uppercase;
 }
