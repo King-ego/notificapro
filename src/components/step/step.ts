@@ -41,7 +41,7 @@ export default {
     },
     {
       id: 4,
-      title: "Infecções Relacionadas à Assistência",
+      title: "Infecções Relacionadas à Assistência à saúde",
       description:
         "É a infecção adquirida após o uso de paciente ser submetido a um procedimento de assistência à saúde ou a internação, que possa ser relacionado a este evento",
       options: [

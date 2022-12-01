@@ -1,11 +1,9 @@
 <template>
   <div class="container-generic">
     <div v-if="!step" class="step-one">
-      <div class="flex items-center justify-center">
-        Identificação do Paciente
-      </div>
+      <div class="title-step-box-left">Identificação do Paciente</div>
       <div class="flex flex-col content-is-input gap-4">
-        <p>Preencha os campos abaixo:</p>
+        <p class="title-step-box-2">Preencha os campos abaixo:</p>
         <div class="flex items-center row-input-custom">
           <span>*</span>
           <input
@@ -78,7 +76,7 @@
         </div>
       </div>
     </div>
-    <div v-if="step === 1">
+    <div v-if="step === 1" class="seleted-adverse">
       <p>Tipo de Incidentes ou Eventos Adversos</p>
       <p>Selecione uma das opções</p>
       <div class="defalt">
@@ -112,15 +110,14 @@
           </div>
         </div>
       </div>
-      <div>
-        <button @click="prev()">Voltar</button>
-        <button @click="nextStep3()">Proximo</button>
+      <div class="content-button-step2">
+        <button @click="nextStep3()" class="btn-form">Proximo</button>
       </div>
     </div>
-    <div v-if="step === 2" class="step-two">
-      <div>{{ data.adverse }}</div>
+    <div v-if="step === 2" class="step-three">
+      <div class="title-step-box-left">{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
-        <div>Selecione uma das Opções</div>
+        <div class="title-step-box-2">Selecione uma das Opções</div>
         <div class="box-content-info">
           <div
             v-for="option in optionsStep3"
@@ -139,14 +136,16 @@
             </p>
           </div>
         </div>
+        <div class="content-button-step3">
+          <button @click="prev()" class="btn-form">Voltar</button>
+          <button @click="nextStep4()" class="btn-form">Proximo</button>
+        </div>
       </div>
-      <button @click="prev()">Voltar</button>
-      <button @click="nextStep4()">Proximo</button>
     </div>
-    <div v-if="step === 3" class="step-three">
-      <div>Descrição do Evento Ocorrido</div>
+    <div v-if="step === 3" class="step-four">
+      <div class="title-step-box-left">Descrição do Evento Ocorrido</div>
       <div class="flex flex-col content-is-input gap-4">
-        <div>Descrição do Evento Ocorrido</div>
+        <div class="title-step-box-2">Descrição do Evento Ocorrido</div>
         <div>
           <textarea
             class="textare-content"
@@ -259,26 +258,44 @@ export default defineComponent({
     },
     open() {
       this.nextToStepModal = true;
-      if (this.data.description) {
-        this.showModalConfirm = true;
-      }
+      if (this.data.description) this.showModalConfirm = true;
     },
   },
 });
 </script>
 
 <style lang="postcss" scoped>
+.step-four,
+.step-one,
+.step-three,
+.seleted-adverse {
+  margin-top: 20px;
+}
+
+.title-step-box-left {
+  @apply flex justify-center;
+  font-weight: bold;
+}
+
 @media (min-width: 800px) {
   .step-one {
-    @apply grid col-span-6 grid-flow-col gap-4;
-  }
-  .step-two {
     @apply grid col-span-6 grid-flow-col gap-4;
   }
   .step-three {
     @apply grid col-span-6 grid-flow-col gap-4;
   }
+  .step-four {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .title-step-box-left {
+    font-size: 30px;
+    width: 100%;
+    max-width: 376px;
+    padding-left: 80px;
+    text-align: left;
+  }
 }
+
 .box-step-2 {
   background: var(--white);
   color: var(--black);
@@ -372,7 +389,7 @@ export default defineComponent({
 }
 
 .box-content-info {
-  overflow-x: scroll;
+  overflow-x: hidden;
   width: 100%;
   max-width: 500px;
   display: flex;
@@ -380,6 +397,11 @@ export default defineComponent({
   height: 430px;
   flex-wrap: wrap;
   gap: 10px 30px;
+  scroll-behavior: smooth;
+}
+
+.box-content-info:hover {
+  overflow-x: auto;
 }
 
 .box-content-info div {
@@ -395,7 +417,8 @@ export default defineComponent({
 }
 
 .selected {
-  border: 1px solid red !important;
+  border: 3px solid var(--secundaryColor) !important;
+  animation: sucessAnimated 2s forwards;
 }
 
 .error {
@@ -406,12 +429,31 @@ export default defineComponent({
   color: red !important;
 }
 
+.content-button-step2 {
+  margin-top: 40px;
+}
+
+.content-button-step3 {
+  @apply flex justify-between;
+  width: 100%;
+}
+.title-step-box-2 {
+  color: var(--white);
+}
 @keyframes errorAnimated {
   from {
     box-shadow: 1px 1px 1px red;
   }
   to {
     box-shadow: 1px 1px 10px red;
+  }
+}
+@keyframes sucessAnimated {
+  from {
+    box-shadow: 1px 1px 1px var(--secundaryColor);
+  }
+  to {
+    box-shadow: 1px 1px 10px var(--secundaryColor);
   }
 }
 </style>

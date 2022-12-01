@@ -28,6 +28,31 @@ export default defineComponent({
   --lightGray: #999999;
   --darkBlue: #2c3e50;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--primaryColor);
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--secundaryColor), var(--primaryColor));
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--primaryColor), var(--secundaryColor));
+  border-radius: 10px;
+}
+
 * {
   padding: 0;
   margin: 0;
