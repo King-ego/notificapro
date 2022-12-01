@@ -3,7 +3,8 @@ export default {
     {
       id: 1,
       title: "Farmacovigilância",
-      description: "bla bla1",
+      description:
+        "Farmacovigilância é relacionado às atividades relativas à identificação, avaliação, compreenção e prevenção de efeito adversos ou quaisquer problemas relacionados ao uso de medicamentos",
       options: [
         "Relacionado a falha na prestação de medicamentos",
         "Relacionado a falha no preparo dos medicamentos",
@@ -15,7 +16,8 @@ export default {
     {
       id: 2,
       title: "Tecnovigilância",
-      description: "bla bla2",
+      description:
+        "Tecnovigilância visa a segurança sanitária de produtos para a saúde pós comercialização, por meio de estudos, análise e investicação a partir das notificações recebidas",
       options: [
         "Relacionado a artigo médico hospital",
         "Relacionado a equipamento hospital",
@@ -25,7 +27,8 @@ export default {
     {
       id: 3,
       title: "Hemovigilância",
-      description: "bla bla3",
+      description:
+        "Hemovigilância é sistema de avaliação e alerta organizado com objetivo de coletar e avaliar e informações sobre efeitos indesejáveis e/ou inesperado da utilização de hemocomponentes, a fim de prevenir seu aparecimento ou recorrência",
       options: [
         "Erro na identificação do hemocomponente",
         "Administração do hemocomponente em paciente errado",
@@ -38,8 +41,9 @@ export default {
     },
     {
       id: 4,
-      title: "Infecções Relacionadas à Assistência",
-      description: "bla bla4",
+      title: "Infecções Relacionadas à Assistência à saúde",
+      description:
+        "É a infecção adquirida após o uso de paciente ser submetido a um procedimento de assistência à saúde ou a internação, que possa ser relacionado a este evento",
       options: [
         "Infecção de sítio cirúrgico",
         "Pneumonia associado a ventilação mecânica",
@@ -52,7 +56,8 @@ export default {
     {
       id: 5,
       title: "Falhas Durante a Prestação de Cuidados",
-      description: "bla bla5",
+      description:
+        "Falhas que podem acarretar ou acarretam danos aos paciente durante cuidados de saúde realizados durante a internação",
       options: [
         "Falha relacionado a identificação de paciente",
         "Falha relacionado a administração de dieta enteral",
@@ -73,7 +78,7 @@ export default {
     {
       id: 6,
       title: "Cirurgia Segura",
-      description: "bla bla6",
+      description: "Falhas de segurança nos processos de assistência cirírgica",
       options: [
         "Falha relaciodo a procedimento cirúrgico",
         "Paciente sem identificação",

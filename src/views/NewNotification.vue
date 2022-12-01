@@ -1,11 +1,9 @@
 <template>
   <div class="container-generic">
-    <div v-if="!step" class="grid col-span-6 grid-flow-col gap-4">
-      <div class="flex items-center justify-center">
-        Identificação do Paciente
-      </div>
+    <div v-if="!step" class="step-one">
+      <div class="title-step-box-left">Identificação do Paciente</div>
       <div class="flex flex-col content-is-input gap-4">
-        <p>Preencha os campos abaixo:</p>
+        <p class="title-step-box-2">Preencha os campos abaixo:</p>
         <div class="flex items-center row-input-custom">
           <span>*</span>
           <input
@@ -13,7 +11,7 @@
             placeholder="Nome do Paciente"
             v-model="data.user.name"
             required
-            :class="nextToStep2 && !data.user.name ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.name ? 'error' : ''"
           />
         </div>
         <div class="flex items-center row-input-custom">
@@ -30,7 +28,7 @@
             type="text"
             placeholder="Data de Admissão"
             v-model="data.user.admissonDate"
-            :class="nextToStep2 && !data.user.admissonDate ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.admissonDate ? 'error' : ''"
             required
           />
         </div>
@@ -40,7 +38,7 @@
             type="text"
             placeholder="Turno"
             v-model="data.user.turn"
-            :class="nextToStep2 && !data.user.turn ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.turn ? 'error' : ''"
             required
           />
         </div>
@@ -50,7 +48,7 @@
             type="text"
             placeholder="Idade"
             v-model="data.user.age"
-            :class="nextToStep2 && !data.user.age ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.age ? 'error' : ''"
             required
           />
         </div>
@@ -60,7 +58,7 @@
             type="text"
             placeholder="Sexo"
             v-model="data.user.sex"
-            :class="nextToStep2 && !data.user.sex ? 'input-error' : ''"
+            :class="nextToStep2 && !data.user.sex ? 'error' : ''"
             required
           />
         </div>
@@ -73,12 +71,12 @@
           />
         </div>
         <div class="flex justify-between">
-          <button @click="next()" class="btn-form">Proximo</button>
+          <button @click="nextStep2()" class="btn-form">Proximo</button>
           <span>*Itens Obrigatórios</span>
         </div>
       </div>
     </div>
-    <div v-if="step === 1">
+    <div v-if="step === 1" class="seleted-adverse">
       <p>Tipo de Incidentes ou Eventos Adversos</p>
       <p>Selecione uma das opções</p>
       <div class="defalt">
@@ -86,67 +84,111 @@
           v-for="adverse in adverses"
           :key="adverse.id"
           class="box-step-2"
-          @mouseenter="showDescrition(adverse.description, true)"
-          @mouseout="showDescrition(adverse.description, false)"
           @click="setAdverse(adverse)"
+          :class="
+            nextToStep3 && !data.adverse
+              ? 'error'
+              : data.adverse === adverse.title
+              ? 'selected'
+              : 'not-selected'
+          "
         >
-          {{
-            adverse.description === verifyDescription
-              ? adverse.description
-              : adverse.title
-          }}
+          <div
+            @mouseenter="showDescrition(adverse.description, true)"
+            @mouseout="showDescrition(adverse.description, false)"
+            :class="
+              adverse.description === verifyDescription
+                ? 'box-step-2-decription'
+                : 'box-step-2-title'
+            "
+          >
+            {{
+              adverse.description === verifyDescription
+                ? adverse.description
+                : adverse.title
+            }}
+          </div>
         </div>
       </div>
+      <div class="content-button-step2">
+        <button @click="nextStep3()" class="btn-form">Proximo</button>
+      </div>
     </div>
-    <div v-if="step === 2" class="grid col-span-6 grid-flow-col gap-4">
-      <div>{{ data.adverse }}</div>
+    <div v-if="step === 2" class="step-three">
+      <div class="title-step-box-left">{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
-        <div>Selecione uma das Opções</div>
+        <div class="title-step-box-2">Selecione uma das Opções</div>
         <div class="box-content-info">
           <div
             v-for="option in optionsStep3"
             :key="option"
-            class="box-step-2"
             @click="setOption(option)"
+            :class="
+              nextToStep4 && !data.option
+                ? 'error'
+                : data.option === option
+                ? 'selected'
+                : 'not-selected'
+            "
           >
             <p>
               {{ option }}
             </p>
           </div>
         </div>
+        <div class="content-button-step3">
+          <button @click="prev()" class="btn-form">Voltar</button>
+          <button @click="nextStep4()" class="btn-form">Proximo</button>
+        </div>
       </div>
     </div>
-    <div v-if="step === 3" class="grid col-span-6 grid-flow-col gap-4">
-      <div>Descrição do Evento Ocorrido</div>
+    <div v-if="step === 3" class="step-four">
+      <div class="title-step-box-left">Descrição do Evento Ocorrido</div>
       <div class="flex flex-col content-is-input gap-4">
-        <div>Descrição do Evento Ocorrido</div>
+        <div class="title-step-box-2">Descrição do Evento Ocorrido</div>
         <div>
           <textarea
             class="textare-content"
             placeholder="Digite aqui"
             v-model="data.description"
+            :class="nextToStepModal && !data.description ? 'error' : ''"
           ></textarea>
         </div>
         <div>
-          <button @click="next()" class="btn-form">Enviar</button>
+          <button @click="open()" class="btn-form">Enviar</button>
         </div>
       </div>
     </div>
+    <modal-confirm
+      :show="showModalConfirm"
+      :data="data"
+      v-on:close="close()"
+      v-on:sucess="sucessModal()"
+    />
+    <modal-sucess :show="sucess" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import stepForm from "../components/step/step";
+import ModalCofirm from "../components/ModalConfirm.vue";
+import ModalSucess from "../components/ModalSucess.vue";
 
 export default defineComponent({
+  components: { "modal-confirm": ModalCofirm, "modal-sucess": ModalSucess },
   data() {
     return {
       step: 0,
       optionsStep3: [""],
+      showModalConfirm: false,
+      sucess: false,
       adverses: stepForm["Eventos Adverse"],
       verifyDescription: "",
       nextToStep2: false,
+      nextToStep3: false,
+      nextToStep4: false,
+      nextToStepModal: false,
       data: {
         user: {
           name: "",
@@ -164,22 +206,41 @@ export default defineComponent({
     };
   },
   methods: {
-    next() {
-      console.log(this.data);
+    nextStep2() {
       const validated = {
         ...this.data.user,
         ocorrencyDate: undefined,
         registre: undefined,
       };
       this.nextToStep2 = true;
+      if (!Object.values(validated).includes("")) {
+        this.next();
+      }
+    },
+    nextStep3() {
+      this.nextToStep3 = true;
+      if (this.data.adverse) this.next();
+    },
+    nextStep4() {
+      this.nextToStep4 = true;
+      if (this.data.option) this.next();
+    },
+    next() {
+      console.log(this.data);
       console.log(this.nextToStep2);
       if (this.step + 1 >= 4) return;
-      if (!Object.values(validated).includes("")) {
-        this.step = this.step + 1;
-      }
+      this.step = this.step + 1;
     },
     prev() {
       this.step = this.step - 1;
+    },
+    close() {
+      this.showModalConfirm = false;
+      this.step = 0;
+    },
+    sucessModal() {
+      this.sucess = true;
+      this.showModalConfirm = false;
     },
     showDescrition(value: string, verify: boolean) {
       if (!verify) {
@@ -191,24 +252,75 @@ export default defineComponent({
     setAdverse(value: { title: string; options: string[] }) {
       this.data.adverse = value.title;
       this.optionsStep3 = value.options;
-      this.next();
     },
     setOption(option: string) {
       this.data.option = option;
-      this.next();
+    },
+    open() {
+      this.nextToStepModal = true;
+      if (this.data.description) this.showModalConfirm = true;
     },
   },
 });
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
+.step-four,
+.step-one,
+.step-three,
+.seleted-adverse {
+  margin-top: 20px;
+}
+
+.title-step-box-left {
+  @apply flex justify-center;
+  font-weight: bold;
+}
+
+@media (min-width: 800px) {
+  .step-one {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .step-three {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .step-four {
+    @apply grid col-span-6 grid-flow-col gap-4;
+  }
+  .title-step-box-left {
+    font-size: 30px;
+    width: 100%;
+    max-width: 376px;
+    padding-left: 80px;
+    text-align: left;
+  }
+}
+
 .box-step-2 {
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--primaryColor);
+  border-radius: 20px;
   cursor: pointer;
-  /* width: 100%;
-  max-width: 100px; */
+  width: 300px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box-step-2 div {
+  @apply flex justify-center items-center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+.box-step-2-decription {
+  color: var(--gray200);
+  font-size: 12px;
+}
+.box-step-2-title {
+  font-weight: 700;
+  color: var(--black);
 }
 .content-is-input input {
   border-radius: 10px;
@@ -227,14 +339,6 @@ export default defineComponent({
 
 .content-is-input input::placeholder {
   color: var(--lightGray);
-}
-
-.input-error {
-  border: 1px solid red !important;
-  animation: errorAnimated 2s forwards;
-}
-.input-error::placeholder {
-  color: red !important;
 }
 .content-is-input {
   position: relative;
@@ -265,14 +369,6 @@ export default defineComponent({
   transform: rotate(110deg);
   border-radius: 100px;
 }
-.btn-form {
-  background: var(--secundaryColor);
-  border: none;
-  color: var(--white);
-  padding: 10px 20px;
-  border-radius: 20px;
-}
-
 .textare-content {
   resize: none;
   width: 100%;
@@ -292,17 +388,8 @@ export default defineComponent({
   justify-content: center;
 }
 
-.defalt div {
-  width: 300px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-}
-
 .box-content-info {
-  overflow-x: scroll;
+  overflow-x: hidden;
   width: 100%;
   max-width: 500px;
   display: flex;
@@ -310,6 +397,11 @@ export default defineComponent({
   height: 430px;
   flex-wrap: wrap;
   gap: 10px 30px;
+  scroll-behavior: smooth;
+}
+
+.box-content-info:hover {
+  overflow-x: auto;
 }
 
 .box-content-info div {
@@ -318,14 +410,50 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--primaryColor);
+  border-radius: 20px;
 }
 
+.selected {
+  border: 3px solid var(--secundaryColor) !important;
+  animation: sucessAnimated 2s forwards;
+}
+
+.error {
+  border: 1px solid red !important;
+  animation: errorAnimated 2s forwards;
+}
+.error::placeholder {
+  color: red !important;
+}
+
+.content-button-step2 {
+  margin-top: 40px;
+}
+
+.content-button-step3 {
+  @apply flex justify-between;
+  width: 100%;
+}
+.title-step-box-2 {
+  color: var(--white);
+}
 @keyframes errorAnimated {
   from {
     box-shadow: 1px 1px 1px red;
   }
   to {
     box-shadow: 1px 1px 10px red;
+  }
+}
+@keyframes sucessAnimated {
+  from {
+    box-shadow: 1px 1px 1px var(--secundaryColor);
+  }
+  to {
+    box-shadow: 1px 1px 10px var(--secundaryColor);
   }
 }
 </style>
