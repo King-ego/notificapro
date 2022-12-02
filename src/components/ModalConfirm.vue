@@ -42,12 +42,12 @@
         <span class="list-item"></span>
         <p class="list-item-text">{{ data.description }}</p>
       </div>
-      <button class="container-button">
+      <div class="container-button">
         <button @click="$emit('close')">Editar Notificação</button>
         <button @click="$emit('sucess')" class="button-generic">
           Enviar Notificação
         </button>
-      </button>
+      </div>
     </div>
   </div>
 </template>
