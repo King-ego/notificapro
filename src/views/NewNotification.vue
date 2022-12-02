@@ -118,7 +118,7 @@
       <div class="title-step-box-left">{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
         <div class="title-step-box-2">Selecione uma das Opções</div>
-        <div class="box-content-info">
+        <div class="box-content-info" ref="option">
           <div
             v-for="option in optionsStep3"
             :key="option"
@@ -136,6 +136,8 @@
             </p>
           </div>
         </div>
+        <div @click="mogol('right')">Right</div>
+        <div @click="mogol('left')">Left</div>
         <div class="content-button-step3">
           <button @click="prev()" class="btn-form">Voltar</button>
           <button @click="nextStep4()" class="btn-form">Proximo</button>
@@ -180,6 +182,7 @@ export default defineComponent({
   data() {
     return {
       step: 0,
+      scroll: 0,
       optionsStep3: [""],
       showModalConfirm: false,
       sucess: false,
@@ -233,6 +236,7 @@ export default defineComponent({
     },
     prev() {
       this.step = this.step - 1;
+      this.scroll = 0;
     },
     close() {
       this.showModalConfirm = false;
@@ -259,6 +263,21 @@ export default defineComponent({
     open() {
       this.nextToStepModal = true;
       if (this.data.description) this.showModalConfirm = true;
+    },
+    mogol(refName: string) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let element: any = this.$refs["option"];
+      let scroll = this.scroll;
+      if (refName === "right") {
+        if (scroll >= element.scrollWidth - 300) return;
+        scroll = scroll + 300;
+        element.scrollTo(scroll, 0);
+      } else if (refName === "left") {
+        if (!scroll) return;
+        scroll = scroll - 300;
+        element.scrollTo(scroll, 0);
+      }
+      this.scroll = scroll;
     },
   },
 });
