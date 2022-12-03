@@ -5,13 +5,7 @@
         v-for="option in options"
         :key="option"
         @click="$emit('select', option)"
-        :class="
-          next && !selectOption
-            ? 'error'
-            : selectOption === option
-            ? 'selected'
-            : 'not-selected'
-        "
+        :class="validated(option)"
       >
         <p>
           {{ option }}
@@ -27,6 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { classValidated } from "../methodValidated";
 
 export default defineComponent({
   props: {
@@ -43,6 +38,9 @@ export default defineComponent({
   methods: {
     select(select: string) {
       this.$emit("select", select);
+    },
+    validated(option: string) {
+      return classValidated(option, this.next, this.selectOption);
     },
     moveSlide(direction: string) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +82,7 @@ export default defineComponent({
 } */
 
 .box-content-info div {
+  cursor: pointer;
   width: 300px;
   height: 200px;
   display: flex;

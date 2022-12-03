@@ -85,13 +85,7 @@
           :key="adverse.id"
           class="box-step-2"
           @click="setAdverse(adverse)"
-          :class="
-            nextToStep3 && !data.adverse
-              ? 'error'
-              : data.adverse === adverse.title
-              ? 'selected'
-              : 'not-selected'
-          "
+          :class="validated(adverse.title)"
         >
           <div
             @mouseenter="showDescrition(adverse.description, true)"
@@ -163,6 +157,7 @@ import stepForm from "../components/step/step";
 import ModalConfirm from "../components/ModalConfirm.vue";
 import ModalSucess from "../components/ModalSucess.vue";
 import Carrossel from "../components/Carrossel.vue";
+import { classValidated } from "../methodValidated";
 
 export default defineComponent({
   components: {
@@ -254,6 +249,9 @@ export default defineComponent({
     open() {
       this.nextToStepModal = true;
       if (this.data.description) this.showModalConfirm = true;
+    },
+    validated(adverse: string) {
+      return classValidated(adverse, this.nextToStep3, this.data.adverse);
     },
   },
 });
