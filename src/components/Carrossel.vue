@@ -18,8 +18,10 @@
         </p>
       </div>
     </div>
-    <button class="button-arrow left" @click="mogol('left')">Left</button>
-    <button class="button-arrow right" @click="mogol('right')">Right</button>
+    <button class="button-arrow left" @click="moveSlide('left')">Left</button>
+    <button class="button-arrow right" @click="moveSlide('right')">
+      Right
+    </button>
   </div>
 </template>
 
@@ -42,15 +44,15 @@ export default defineComponent({
     select(select: string) {
       this.$emit("select", select);
     },
-    mogol(refName: string) {
+    moveSlide(direction: string) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let element: any = this.$refs["option"];
       let scroll = this.scroll;
-      if (refName === "right") {
+      if (direction === "right") {
         if (scroll >= element.scrollWidth - 300) return;
         scroll = scroll + 300;
         element.scrollTo(scroll, 0);
-      } else if (refName === "left") {
+      } else if (direction === "left") {
         if (!scroll) return;
         scroll = scroll - 300;
         element.scrollTo(scroll, 0);
