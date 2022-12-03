@@ -27,6 +27,7 @@ export default defineComponent({
   --gray200: #bfbfbf;
   --lightGray: #999999;
   --darkBlue: #2c3e50;
+  --red: #ff0202;
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -103,16 +104,42 @@ button {
 
 .selected {
   border: 3px solid var(--secundaryColor) !important;
-  animation: sucessAnimated 2s forwards;
+  animation: sucessAnimated 2s infinite;
 }
 
 .error {
-  border: 1px solid red !important;
+  border: 1px solid var(--red) !important;
   animation: errorAnimated 2s forwards;
 }
 
 .error::placeholder {
-  color: red !important;
+  color: var(--red) !important;
+}
+
+.before::before {
+  content: "";
+  position: absolute;
+  top: -200px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: var(--secundaryColor);
+  z-index: -1;
+  transform: rotate(110deg);
+  border-radius: 100px;
+}
+
+.after::after {
+  content: "";
+  position: absolute;
+  top: -300px;
+  left: -52px;
+  bottom: 0;
+  width: 96%;
+  background: var(--primaryColor);
+  z-index: -1;
+  transform: rotate(-18deg);
+  border-radius: 20px 100px 50% 100px;
 }
 
 @keyframes errorAnimated {

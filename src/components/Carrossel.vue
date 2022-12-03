@@ -12,9 +12,15 @@
         </p>
       </div>
     </div>
-    <button class="button-arrow left" @click="moveSlide('left')">Left</button>
-    <button class="button-arrow right" @click="moveSlide('right')">
-      Right
+    <button v-if="scroll" class="button-arrow left" @click="moveSlide('left')">
+      <img src="../assets/images/angle-left.png" alt="Arrow left" />
+    </button>
+    <button
+      v-if="scroll < widthScroll"
+      class="button-arrow right"
+      @click="moveSlide('right')"
+    >
+      <img src="../assets/images/angle-right.png" alt="Arrow right" />
     </button>
   </div>
 </template>
@@ -33,7 +39,7 @@ export default defineComponent({
     select: null,
   },
   data() {
-    return { scroll: 0 };
+    return { scroll: 0, widthScroll: 1 };
   },
   methods: {
     select(select: string) {
@@ -42,20 +48,19 @@ export default defineComponent({
     validated(option: string) {
       return classValidated(option, this.next, this.selectOption);
     },
-    moveSlide(direction: string) {
+    moveSlide(direction: "right" | "left") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let element: any = this.$refs["option"];
       let scroll = this.scroll;
       if (direction === "right") {
-        if (scroll >= element.scrollWidth - 300) return;
         scroll = scroll + 300;
-        element.scrollTo(scroll, 0);
       } else if (direction === "left") {
-        if (!scroll) return;
         scroll = scroll - 300;
-        element.scrollTo(scroll, 0);
       }
+      element.scrollTo(scroll, 0);
       this.scroll = scroll;
+      this.widthScroll = element.scrollWidth - 390;
+      console.log({ second: this.$data });
     },
   },
   unmounted() {
@@ -68,7 +73,7 @@ export default defineComponent({
 .box-content-info {
   overflow-x: hidden;
   width: 100%;
-  max-width: 500px;
+  max-width: 609px;
   display: flex;
   flex-direction: column;
   height: 430px;
@@ -76,10 +81,6 @@ export default defineComponent({
   gap: 10px 30px;
   scroll-behavior: smooth;
 }
-
-/* .box-content-info:hover {
-  overflow-x: auto;
-} */
 
 .box-content-info div {
   cursor: pointer;
@@ -100,6 +101,9 @@ export default defineComponent({
   user-select: none;
   position: absolute;
   top: 50%;
+  transform: translateY(-50px);
+  background: var(--blackA03);
+  width: 42px;
 }
 .left {
   left: 0;

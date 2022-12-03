@@ -2,7 +2,7 @@
   <div class="container-generic">
     <div v-if="!step" class="step-one">
       <div class="title-step-box-left">Identificação do Paciente</div>
-      <div class="flex flex-col content-is-input gap-4">
+      <div class="flex flex-col content-is-input before after gap-4">
         <p class="title-step-box-2">Preencha os campos abaixo:</p>
         <div class="flex items-center row-input-custom">
           <span>*</span>
@@ -76,9 +76,11 @@
         </div>
       </div>
     </div>
-    <div v-if="step === 1" class="seleted-adverse">
-      <p>Tipo de Incidentes ou Eventos Adversos</p>
-      <p>Selecione uma das opções</p>
+    <div v-if="step === 1" class="seleted-adverse relative before after">
+      <p class="title-step-box-2 md:text-2xl">
+        Tipo de Incidentes ou Eventos Adversos
+      </p>
+      <p class="title-step-box-2 mt-3 mb-6">Selecione uma das opções</p>
       <div class="defalt">
         <div
           v-for="adverse in adverses"
@@ -110,7 +112,7 @@
     </div>
     <div v-if="step === 2" class="step-three">
       <div class="title-step-box-left">{{ data.adverse }}</div>
-      <div class="flex flex-col content-is-input gap-4">
+      <div class="flex flex-col content-is-input before after gap-4">
         <div class="title-step-box-2">Selecione uma das Opções</div>
         <carrossel
           :options="optionsStep3"
@@ -126,7 +128,7 @@
     </div>
     <div v-if="step === 3" class="step-four">
       <div class="title-step-box-left">Descrição do Evento Ocorrido</div>
-      <div class="flex flex-col content-is-input gap-4">
+      <div class="flex flex-col content-is-input before after gap-4">
         <div class="title-step-box-2">Descrição do Evento Ocorrido</div>
         <div>
           <textarea
@@ -216,6 +218,7 @@ export default defineComponent({
     next() {
       console.log(this.data);
       console.log(this.nextToStep2);
+      console.log({ data: this.$data });
       if (this.step + 1 >= 4) return;
       this.step = this.step + 1;
     },
@@ -240,10 +243,8 @@ export default defineComponent({
     setAdverse(value: { title: string; options: string[] }) {
       this.data.adverse = value.title;
       this.optionsStep3 = value.options;
-      console.log(value.options);
     },
     setOption(option: string) {
-      console.log(option);
       this.data.option = option;
     },
     open() {
@@ -338,30 +339,18 @@ export default defineComponent({
   padding: 20px;
   overflow: hidden;
 }
-.content-is-input::after {
-  content: "";
-  position: absolute;
-  top: -300px;
-  left: -52px;
-  bottom: 0;
-  width: 96%;
-  background: var(--primaryColor);
-  z-index: -1;
-  transform: rotate(-18deg);
-  border-radius: 20px 100px 50% 100px;
+
+.seleted-adverse::after,
+.seleted-adverse::before {
+  transform: rotate(0);
+  top: -20px;
+  border-radius: 200px 50% 200px 200px;
 }
-.content-is-input::before {
-  content: "";
-  position: absolute;
-  top: -200px;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background: var(--secundaryColor);
-  z-index: -1;
-  transform: rotate(110deg);
-  border-radius: 100px;
-}
+/* .seleted-adverse::before {
+  top: 0;
+  transform: rotate(0);
+} */
+
 .textare-content {
   resize: none;
   width: 100%;

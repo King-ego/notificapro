@@ -107,8 +107,8 @@ export default defineComponent({
 
 .list-item {
   display: block;
-  width: 10px;
-  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
   background: var(--primaryColor);
   border-radius: 50%;
   margin-right: 10px;
