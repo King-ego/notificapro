@@ -87,7 +87,9 @@
           :key="adverse.id"
           class="box-step-2"
           @click="setAdverse(adverse)"
+          @keypress.enter="setAdverse(adverse)"
           :class="validated(adverse.title)"
+          tabindex="1"
         >
           <div
             @mouseenter="showDescrition(adverse.description, true)"

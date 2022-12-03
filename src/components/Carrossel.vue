@@ -16,7 +16,7 @@
       <img src="../assets/images/angle-left.png" alt="Arrow left" />
     </button>
     <button
-      v-if="scroll < widthScroll"
+      v-if="scroll < widthScroll - 400"
       class="button-arrow right"
       @click="moveSlide('right')"
     >
@@ -39,7 +39,7 @@ export default defineComponent({
     select: null,
   },
   data() {
-    return { scroll: 0, widthScroll: 1 };
+    return { scroll: 0, widthScroll: 401 };
   },
   methods: {
     select(select: string) {
@@ -50,17 +50,19 @@ export default defineComponent({
     },
     moveSlide(direction: "right" | "left") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let element: any = this.$refs["option"];
+      const element: any = this.$refs["option"];
       let scroll = this.scroll;
+      const widthScroll = element.scrollWidth;
       if (direction === "right") {
-        scroll = scroll + 300;
-      } else if (direction === "left") {
-        scroll = scroll - 300;
+        scroll = scroll + 700 > widthScroll ? widthScroll + 300 : scroll + 300;
+      }
+      if (direction === "left") {
+        scroll = scroll >= widthScroll ? widthScroll - 700 : scroll - 300;
+        if (scroll < 0) scroll = 0;
       }
       element.scrollTo(scroll, 0);
       this.scroll = scroll;
-      this.widthScroll = element.scrollWidth - 390;
-      console.log({ second: this.$data });
+      this.widthScroll = widthScroll;
     },
   },
   unmounted() {
