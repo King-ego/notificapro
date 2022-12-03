@@ -118,24 +118,12 @@
       <div class="title-step-box-left">{{ data.adverse }}</div>
       <div class="flex flex-col content-is-input gap-4">
         <div class="title-step-box-2">Selecione uma das Opções</div>
-        <div class="box-content-info">
-          <div
-            v-for="option in optionsStep3"
-            :key="option"
-            @click="setOption(option)"
-            :class="
-              nextToStep4 && !data.option
-                ? 'error'
-                : data.option === option
-                ? 'selected'
-                : 'not-selected'
-            "
-          >
-            <p>
-              {{ option }}
-            </p>
-          </div>
-        </div>
+        <carrossel
+          :options="optionsStep3"
+          v-on:select="setOption($event)"
+          :next="nextToStep4"
+          :selectOption="data.option"
+        />
         <div class="content-button-step3">
           <button @click="prev()" class="btn-form">Voltar</button>
           <button @click="nextStep4()" class="btn-form">Proximo</button>
@@ -172,11 +160,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import stepForm from "../components/step/step";
-import ModalCofirm from "../components/ModalConfirm.vue";
+import ModalConfirm from "../components/ModalConfirm.vue";
 import ModalSucess from "../components/ModalSucess.vue";
+import Carrossel from "../components/Carrossel.vue";
 
 export default defineComponent({
-  components: { "modal-confirm": ModalCofirm, "modal-sucess": ModalSucess },
+  components: {
+    ModalConfirm,
+    ModalSucess,
+    Carrossel,
+  },
   data() {
     return {
       step: 0,
@@ -252,8 +245,10 @@ export default defineComponent({
     setAdverse(value: { title: string; options: string[] }) {
       this.data.adverse = value.title;
       this.optionsStep3 = value.options;
+      console.log(value.options);
     },
     setOption(option: string) {
+      console.log(option);
       this.data.option = option;
     },
     open() {
@@ -388,47 +383,6 @@ export default defineComponent({
   justify-content: center;
 }
 
-.box-content-info {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  height: 430px;
-  flex-wrap: wrap;
-  gap: 10px 30px;
-  scroll-behavior: smooth;
-}
-
-.box-content-info:hover {
-  overflow-x: auto;
-}
-
-.box-content-info div {
-  width: 300px;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--white);
-  color: var(--black);
-  border: 1px solid var(--primaryColor);
-  border-radius: 20px;
-}
-
-.selected {
-  border: 3px solid var(--secundaryColor) !important;
-  animation: sucessAnimated 2s forwards;
-}
-
-.error {
-  border: 1px solid red !important;
-  animation: errorAnimated 2s forwards;
-}
-.error::placeholder {
-  color: red !important;
-}
-
 .content-button-step2 {
   margin-top: 40px;
 }
@@ -439,21 +393,5 @@ export default defineComponent({
 }
 .title-step-box-2 {
   color: var(--white);
-}
-@keyframes errorAnimated {
-  from {
-    box-shadow: 1px 1px 1px red;
-  }
-  to {
-    box-shadow: 1px 1px 10px red;
-  }
-}
-@keyframes sucessAnimated {
-  from {
-    box-shadow: 1px 1px 1px var(--secundaryColor);
-  }
-  to {
-    box-shadow: 1px 1px 10px var(--secundaryColor);
-  }
 }
 </style>

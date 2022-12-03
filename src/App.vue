@@ -100,4 +100,35 @@ button {
   padding-right: 5% !important;
   padding-left: 5% !important;
 }
+
+.selected {
+  border: 3px solid var(--secundaryColor) !important;
+  animation: sucessAnimated 2s forwards;
+}
+
+.error {
+  border: 1px solid red !important;
+  animation: errorAnimated 2s forwards;
+}
+
+.error::placeholder {
+  color: red !important;
+}
+
+@keyframes errorAnimated {
+  from {
+    box-shadow: 1px 1px 1px red;
+  }
+  to {
+    box-shadow: 1px 1px 10px red;
+  }
+}
+@keyframes sucessAnimated {
+  from {
+    box-shadow: 1px 1px 1px var(--secundaryColor);
+  }
+  to {
+    box-shadow: 1px 1px 10px var(--secundaryColor);
+  }
+}
 </style>
