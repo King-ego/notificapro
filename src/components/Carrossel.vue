@@ -5,28 +5,29 @@
         v-for="option in options"
         :key="option"
         @click="$emit('select', option)"
-        :class="
-          next && !selectOption
-            ? 'error'
-            : selectOption === option
-            ? 'selected'
-            : 'not-selected'
-        "
+        :class="validated(option)"
       >
         <p>
           {{ option }}
         </p>
       </div>
     </div>
-    <button class="button-arrow left" @click="moveSlide('left')">Left</button>
-    <button class="button-arrow right" @click="moveSlide('right')">
-      Right
+    <button v-if="scroll" class="button-arrow left" @click="moveSlide('left')">
+      <img src="../assets/images/angle-left.png" alt="Arrow left" />
+    </button>
+    <button
+      v-if="scroll < widthScroll - 400"
+      class="button-arrow right"
+      @click="moveSlide('right')"
+    >
+      <img src="../assets/images/angle-right.png" alt="Arrow right" />
     </button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { classValidated } from "../methodValidated";
 
 export default defineComponent({
   props: {
@@ -38,26 +39,30 @@ export default defineComponent({
     select: null,
   },
   data() {
-    return { scroll: 0 };
+    return { scroll: 0, widthScroll: 401 };
   },
   methods: {
     select(select: string) {
       this.$emit("select", select);
     },
-    moveSlide(direction: string) {
+    validated(option: string) {
+      return classValidated(option, this.next, this.selectOption);
+    },
+    moveSlide(direction: "right" | "left") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let element: any = this.$refs["option"];
+      const element: any = this.$refs["option"];
       let scroll = this.scroll;
+      const widthScroll = element.scrollWidth;
       if (direction === "right") {
-        if (scroll >= element.scrollWidth - 300) return;
-        scroll = scroll + 300;
-        element.scrollTo(scroll, 0);
-      } else if (direction === "left") {
-        if (!scroll) return;
-        scroll = scroll - 300;
-        element.scrollTo(scroll, 0);
+        scroll = scroll + 700 > widthScroll ? widthScroll + 300 : scroll + 300;
       }
+      if (direction === "left") {
+        scroll = scroll >= widthScroll ? widthScroll - 700 : scroll - 300;
+        if (scroll < 0) scroll = 0;
+      }
+      element.scrollTo(scroll, 0);
       this.scroll = scroll;
+      this.widthScroll = widthScroll;
     },
   },
   unmounted() {
@@ -70,7 +75,7 @@ export default defineComponent({
 .box-content-info {
   overflow-x: hidden;
   width: 100%;
-  max-width: 500px;
+  max-width: 609px;
   display: flex;
   flex-direction: column;
   height: 430px;
@@ -79,11 +84,8 @@ export default defineComponent({
   scroll-behavior: smooth;
 }
 
-/* .box-content-info:hover {
-  overflow-x: auto;
-} */
-
 .box-content-info div {
+  cursor: pointer;
   width: 300px;
   height: 200px;
   display: flex;
@@ -101,6 +103,9 @@ export default defineComponent({
   user-select: none;
   position: absolute;
   top: 50%;
+  transform: translateY(-50px);
+  background: var(--blackA03);
+  width: 42px;
 }
 .left {
   left: 0;

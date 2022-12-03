@@ -1,5 +1,5 @@
 <template>
-  <header class="header container-generic">
+  <header class="header container-generic" v-if="checkedRouter()">
     <nav class="flex justify-between">
       <div class="flex items-start">
         <router-link to="/" class="flex items-center">
@@ -22,7 +22,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-export default defineComponent({});
+export default defineComponent({
+  methods: {
+    checkedRouter() {
+      const routesDoNotExistHeader = ["/login"];
+      if (routesDoNotExistHeader.includes(this.$route.path)) {
+        return false;
+      }
+      return true;
+    },
+  },
+});
 </script>
 
 <style scoped>
